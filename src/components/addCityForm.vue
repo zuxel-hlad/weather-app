@@ -7,7 +7,6 @@
         type="text"
         placeholder="Введите название города"
       >
-      <span v-if="errorMessage" class="add-form-error">{{ errorMessage }}</span>
     </div>
     <button class="add-form-btn" type="submit">Добавить город</button>
   </form>
@@ -21,11 +20,6 @@ export default {
       type: String,
       default: '',
       required: true
-    },
-    errorMessage: {
-      type: String,
-      required: false,
-      default: ''
     }
   },
 
@@ -63,6 +57,7 @@ export default {
     cursor: pointer;
     padding: 10px;
     border: 1px solid green;
+    border-radius: 4px;
     font-size: 14px;
 
     &:focus-visible {

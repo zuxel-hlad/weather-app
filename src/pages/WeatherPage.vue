@@ -4,7 +4,6 @@
       <h1 class="weather-page-title">Weather App</h1>
       <add-city-form
         v-model="cityName"
-        :error-message="error"
       />
       <weather-list
         :cities="cities"
@@ -29,12 +28,11 @@ export default {
   },
   methods: {
     ...mapActions('weatherModule', ['getCity', 'getCityFromId']),
-    ...mapMutations('weatherModule', ['deleteCity'])
+    ...mapMutations('weatherModule', ['deleteCity', 'getCitiesFromCookie'])
   },
   computed: {
     ...mapState('weatherModule', {
-      cities: state => state.cities,
-      error: state => state.error
+      cities: state => state.cities
     })
   },
   watch: {
@@ -44,7 +42,7 @@ export default {
   },
   components: { WeatherList, addCityForm },
   mounted () {
-    // this.getCity()
+    this.getCitiesFromCookie()
   }
 }
 </script>

@@ -8,12 +8,12 @@
       </div>
     </div>
     <div class="card-weather">
-      <h3 class="card-temp">{{ city.main.temp }} <sup><sup>o</sup>C</sup></h3>
+      <h3 class="card-temp">{{ city.main.temp.toFixed() }} <sup><sup>o</sup>C</sup></h3>
       <transition name="details-fade">
         <div class="card-details" v-if="details">
           <button class="card-details-close" @click.stop="details = !details">скрыть детали</button>
           <small class="card-details-descr">
-            <strong>Ощущается как:</strong> {{ city.main.feels_like.toFixed(0) }}
+            <strong>Ощущается как:</strong> {{ city.main.feels_like.toFixed() }}
           </small>
           <small class="card-details-descr"><strong>Атмосферное давление:</strong> {{ city.main.pressure }} гПа</small>
           <small class="card-details-descr"><strong>Погодные условия:</strong> {{ city.weather[0].description }}</small>

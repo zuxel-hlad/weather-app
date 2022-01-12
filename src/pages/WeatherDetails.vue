@@ -10,6 +10,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.weather-details {
+  padding: 120px 0 0 0;
+  min-height: 100vh;
 
+  & .details-title {
+    color: #fff;
+    text-align: center;
+  }
+}
 </style>
