@@ -1,12 +1,49 @@
 <template>
   <section class="weather-details">
-    <h1 class="details-title">Weather details page</h1>
+    <div class="container">
+      <div class="weather-details-nav">
+        <h1 class="details-title">Страница подробного прогноза</h1>
+        <button class="weather-details-back" @click="$router.push('/')">На главную</button>
+      </div>
+      <div class="weather-now">
+        <h2 class="weather-now-title">Пргноз на данный момент</h2>
+        <span class="weather-now-text">Город: {{ currentCity.name }}</span>
+        <span class="weather-now-text">Долгота: {{ currentCity.coord.lat }}</span>
+        <span class="weather-now-text">Широта: {{ currentCity.coord.lon }}</span>
+        <span class="weather-now-text">Температура сейчас: {{ currentCity.main.temp.toFixed() }}
+          <sup><sup>o</sup>C</sup></span>
+        <span class="weather-now-text">Ощущается как: {{
+            currentCity.main.feels_like.toFixed()
+          }} <sup><sup>o</sup>C</sup></span>
+        <span class="weather-now-text">Влажность: {{ currentCity.main.humidity }} %</span>
+        <span class="weather-now-text">Атмосферное давление:  {{ currentCity.main.pressure }} гПа</span>
+        <span class="weather-now-text">Погодные условия: {{ currentCity.weather[0].description }}</span>
+        <span class="weather-now-text">Скоровсть ветера:  {{ currentCity.wind.speed.toFixed() }} м/сек</span>
+        <span class="weather-now-text">Видмость: {{ currentCity.visibility }}  метров</span>
+      </div>
+
+    </div>
   </section>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
-  name: 'WeatherDetails'
+  name: 'WeatherDetails',
+
+  computed: {
+    ...mapState('weatherModule', {
+      cities: state => state.cities
+    }),
+    currentCity () {
+      return this.cities.find(city => city.name === this.$route.params.cityName)
+    }
+  },
+
+  mounted () {
+    console.log(this.$store.weatherModule)
+  }
 }
 </script>
 
@@ -15,9 +52,45 @@ export default {
   padding: 120px 0 0 0;
   min-height: 100vh;
 
-  & .details-title {
+  &-nav {
+    padding: 10px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 4px;
+  }
+
+  &-back {
+    padding: 10px 20px;
+    background: green;
+    border-radius: 4px;
+    border: none;
     color: #fff;
+    transition: background-color .4s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darkgreen;
+    }
+  }
+
+  & .details-title {
+    padding: 15px;
+    margin: 0;
     text-align: center;
+  }
+
+  & .weather-now {
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 20px;
+
+    &-text {
+      display: block;
+      margin-bottom: 10px;
+    }
   }
 }
 </style>

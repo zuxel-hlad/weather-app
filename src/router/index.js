@@ -6,12 +6,12 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/',
-      alias: '/main',
+      path: '/home?',
+      alias: '/',
       component: WeatherPage
     },
     {
-      path: '/details',
+      path: '/home/:cityName',
       component: WeatherDetails
     }
   ],

@@ -40,10 +40,8 @@ export default {
       this.getCity(newVal)
     }
   },
-  components: { WeatherList, addCityForm },
-  mounted () {
-    this.getCitiesFromCookie()
-  }
+  components: { WeatherList, addCityForm }
+
 }
 </script>
 

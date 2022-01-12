@@ -2,10 +2,15 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import store from '../index'
 
+const getCitiesFromCookie = (key) => {
+  const response = Cookies.get(key)
+  return [...JSON.parse(response)]
+}
+
 export default {
   namespaced: true,
   state: () => ({
-    cities: [],
+    cities: getCitiesFromCookie('cities'),
     apiKey: 'ffc28ffb8dd4bfbefdbbb8d51dbbcc6c',
     lang: 'ru'
   }),
@@ -14,23 +19,17 @@ export default {
     setToCookie (state) {
       Cookies.set('cities', JSON.stringify(state.cities))
     },
-    getCitiesFromCookie (state) {
-      let response
-      if (Cookies.get('cities')) {
-        response = Cookies.get('cities')
-        state.cities = JSON.parse(response)
-      } else {
-        return false
-      }
-    },
+
     setCity (state, payload) {
       state.cities.push(payload)
       store.commit('weatherModule/setToCookie')
     },
+
     updateCity (state, payload) {
       state.cities[payload.idx] = { ...payload.city }
       store.commit('weatherModule/setToCookie')
     },
+
     deleteCity (state, payload) {
       state.cities = state.cities.filter(city => city.id !== payload)
       store.commit('weatherModule/setToCookie')

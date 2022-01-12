@@ -21,6 +21,12 @@
         </div>
       </transition>
     </div>
+    <router-link
+      :to="`/home/${city.name}`"
+      class="card-more"
+    >
+      Подробный прогноз
+    </router-link>
   </div>
 </template>
 
@@ -47,15 +53,27 @@ export default {
   padding: 20px;
   width: 380px;
   min-height: 200px;
-  //box-shadow: 3px 3px 20px #d0d0d0;
+  box-shadow: 3px 3px 20px #d0d0d0;
   background: linear-gradient(to top, darkgreen, lightgreen);
   border-radius: 4px;
   cursor: pointer;
+  position: relative;
+
+  &-more {
+    padding: 5px;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    text-decoration: none;
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+  }
 
   &-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
   }
 
   &-title {

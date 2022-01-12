@@ -54,7 +54,6 @@ export default {
 
   &-input {
     width: 100%;
-    cursor: pointer;
     padding: 10px;
     border: 1px solid green;
     border-radius: 4px;
