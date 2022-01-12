@@ -1,10 +1,15 @@
 <template>
   <section class="weather-page">
     <div class="container">
-      <h1 class="weather-page-title">Simple weather App</h1>
+      <h1 class="weather-page-title">Weather App</h1>
+      <add-city-form
+        v-model="cityName"
+        :error-message="error"
+      />
       <weather-list
         :cities="cities"
         @updateInfo="getCityFromId"
+        @delete="deleteCity"
       />
     </div>
   </section>
@@ -12,24 +17,34 @@
 
 <script>
 import WeatherList from '../components/WeatherList'
-import { mapActions, mapState } from 'vuex'
+import addCityForm from '../components/addCityForm'
+import { mapActions, mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'WeatherPage',
   data () {
-    return {}
+    return {
+      cityName: ''
+    }
   },
   methods: {
-    ...mapActions('weatherModule', ['getCity', 'getCityFromId'])
+    ...mapActions('weatherModule', ['getCity', 'getCityFromId']),
+    ...mapMutations('weatherModule', ['deleteCity'])
   },
   computed: {
     ...mapState('weatherModule', {
-      cities: state => state.cities
+      cities: state => state.cities,
+      error: state => state.error
     })
   },
-  components: { WeatherList },
+  watch: {
+    cityName (newVal) {
+      this.getCity(newVal)
+    }
+  },
+  components: { WeatherList, addCityForm },
   mounted () {
-    this.getCity()
+    // this.getCity()
   }
 }
 </script>
@@ -37,11 +52,15 @@ export default {
 <style scoped lang="scss">
 .weather-page {
   padding: 120px 0 0 0;
-  min-height: 100vh;
 
   &-title {
     margin: 0 0 50px 0;
     text-align: center;
+    color: #fff;
+  }
+
+  & .add-form {
+    margin-bottom: 20px;
   }
 }
 </style>

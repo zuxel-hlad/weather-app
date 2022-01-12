@@ -1,11 +1,13 @@
 <template>
-  <div class="weather-list">
+  <div class="weather-list" v-if="cities.length">
     <weather-card
       v-for="city in cities" :key="city.id"
       :city="city"
       @updateInfo="$emit('updateInfo', city.id)"
+      @delete="$emit('delete',city.id)"
     />
   </div>
+  <h3 v-else>Выбранных городов пока нет.</h3>
 </template>
 
 <script>
@@ -28,7 +30,7 @@ export default {
 .weather-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 25px;
 }
 </style>
