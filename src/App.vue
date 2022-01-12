@@ -1,5 +1,7 @@
 <template>
-  <h1>Weather App</h1>
+  <main>
+    <router-view></router-view>
+  </main>
 </template>
 
 <script>
