@@ -27,8 +27,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('weatherModule', ['getCity', 'getCityFromId']),
-    ...mapMutations('weatherModule', ['deleteCity', 'getCitiesFromCookie'])
+    ...mapActions('weatherModule', ['getCity', 'getCityFromId', 'weatherOnAppStartUpdate']),
+    ...mapMutations('weatherModule', ['deleteCity'])
   },
   computed: {
     ...mapState('weatherModule', {
@@ -40,7 +40,11 @@ export default {
       this.getCity(newVal)
     }
   },
-  components: { WeatherList, addCityForm }
+  components: { WeatherList, addCityForm },
+
+  mounted () {
+    this.weatherOnAppStartUpdate()
+  }
 
 }
 </script>

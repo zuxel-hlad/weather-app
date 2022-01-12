@@ -37,7 +37,7 @@ export default {
       cities: state => state.cities
     }),
     currentCity () {
-      return this.cities.find(city => city.name === this.$route.params.cityName)
+      return this.cities.find(city => city.id === +this.$route.params.id)
     }
   },
 

@@ -22,7 +22,7 @@
       </transition>
     </div>
     <router-link
-      :to="`/home/${city.name}`"
+      :to="`/home/${city.id}`"
       class="card-more"
     >
       Подробный прогноз

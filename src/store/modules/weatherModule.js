@@ -2,15 +2,18 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import store from '../index'
 
-const getCitiesFromCookie = (key) => {
-  const response = Cookies.get(key)
-  return [...JSON.parse(response)]
+const initialState = (key) => {
+  if (Cookies.get(key) === undefined) {
+    Cookies.set(key, JSON.stringify([]))
+  } else {
+    return [...JSON.parse(Cookies.get(key))]
+  }
 }
 
 export default {
   namespaced: true,
   state: () => ({
-    cities: getCitiesFromCookie('cities'),
+    cities: initialState('cities'),
     apiKey: 'ffc28ffb8dd4bfbefdbbb8d51dbbcc6c',
     lang: 'ru'
   }),
@@ -42,7 +45,6 @@ export default {
         if (payload) {
           const weather = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${payload}&units=metric&appid=${state.apiKey}&lang=${state.lang}`)
           commit('setCity', weather.data)
-          console.log(state.cities)
         }
       } catch (e) {
         console.error({ ...e })
@@ -58,11 +60,19 @@ export default {
             idx: currentCityIdx,
             city: newWeather.data
           })
-          console.log(state.cities)
         }
       } catch (e) {
         console.error({ ...e })
       }
+    },
+
+    async weatherOnAppStartUpdate ({ dispatch, state }) {
+      if (!state.cities.lang) {
+        return
+      }
+      state.cities.forEach(city => {
+        setTimeout(() => dispatch('getCityFromId', city.id), 500)
+      })
     }
   }
 }

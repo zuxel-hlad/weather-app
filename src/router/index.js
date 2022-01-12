@@ -11,7 +11,7 @@ const router = createRouter({
       component: WeatherPage
     },
     {
-      path: '/home/:cityName',
+      path: '/home/:id',
       component: WeatherDetails
     }
   ],
