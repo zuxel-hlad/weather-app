@@ -15,11 +15,14 @@ import store from '../index'
 // console.log(chekCoords().latitude)
 
 const initialState = (key) => {
+  let state = []
   if (Cookies.get(key) === undefined) {
-    Cookies.set(key, JSON.stringify([]))
+    Cookies.set(key, JSON.stringify(state))
   } else {
-    return [...JSON.parse(Cookies.get(key))]
+    state = [...JSON.parse(Cookies.get(key))]
   }
+
+  return state
 }
 
 export default {
@@ -37,6 +40,7 @@ export default {
     },
 
     setCity (state, payload) {
+      console.log(state.cities)
       if (state.cities === [] || !state.cities.some(city => city.id === payload.id)) {
         state.isCityExist = false
         state.cities.push(payload)
