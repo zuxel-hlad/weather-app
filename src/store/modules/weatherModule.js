@@ -2,6 +2,18 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import store from '../index'
 
+function chekCoords (position) {
+  const latitude = position.coords.latitude
+  const longitude = position.coords.longitude
+  return {
+    latitude,
+    longitude
+  }
+}
+
+navigator.geolocation.getCurrentPosition(chekCoords)
+console.log(chekCoords().latitude)
+
 const initialState = (key) => {
   if (Cookies.get(key) === undefined) {
     Cookies.set(key, JSON.stringify([]))
@@ -47,7 +59,7 @@ export default {
           commit('setCity', weather.data)
         }
       } catch (e) {
-        console.error({ ...e })
+        console.error(e.message)
       }
     },
 
@@ -62,7 +74,7 @@ export default {
           })
         }
       } catch (e) {
-        console.error({ ...e })
+        console.error(e.message)
       }
     },
 
