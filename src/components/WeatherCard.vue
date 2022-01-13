@@ -2,6 +2,7 @@
   <div class="card" @click="details = !details">
     <div class="card-header">
       <h2 class="card-title">{{ city.name }}</h2>
+      <span class="card-location"></span>
       <div class="card-header-btns">
         <button class="card-button" type="button" @click.stop="$emit('updateInfo')">Обновить</button>
         <button class="card-button" type="button" @click.stop="$emit('delete')">Удалить</button>
@@ -73,7 +74,13 @@ export default {
   &-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    &-btns {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+    }
   }
 
   &-title {
@@ -83,6 +90,7 @@ export default {
 
   &-button {
     padding: 5px 10px;
+    min-width: 85px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;

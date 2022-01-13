@@ -1,64 +1,45 @@
 import axios from 'axios'
-import Cookies from 'js-cookie'
-import store from '../index'
+import useCookie from '../../tools/useCookie'
 
-// function chekCoords (position) {
-//   const latitude = position.coords.latitude
-//   const longitude = position.coords.longitude
-//   return {
-//     latitude,
-//     longitude
-//   }
-// }
-//
-// navigator.geolocation.getCurrentPosition(chekCoords)
-// console.log(chekCoords().latitude)
-
-const initialState = (key) => {
-  let state = []
-  if (Cookies.get(key) === undefined) {
-    Cookies.set(key, JSON.stringify(state))
-  } else {
-    state = [...JSON.parse(Cookies.get(key))]
-  }
-
-  return state
-}
+const { setToCookie } = useCookie()
 
 export default {
+
   namespaced: true,
   state: () => ({
-    cities: initialState('cities'),
+    cities: [],
     apiKey: 'ffc28ffb8dd4bfbefdbbb8d51dbbcc6c',
     lang: 'ru',
-    isCityExist: false
+    isCityExist: false,
+    currentLocation: {}
   }),
 
   mutations: {
-    setToCookie (state) {
-      Cookies.set('cities', JSON.stringify(state.cities))
-    },
 
-    setCity (state, payload) {
-      console.log(state.cities)
-      if (state.cities === [] || !state.cities.some(city => city.id === payload.id)) {
+    addNewCity (state, payload) {
+      if (!state.cities.some(city => city.id === payload.id)) {
         state.isCityExist = false
         state.cities.push(payload)
-        store.commit('weatherModule/setToCookie')
+        setToCookie('cities', state.cities)
       } else {
         state.isCityExist = true
       }
     },
 
+    setCurrentLocation (state, payload) {
+      state.currentLocation = { ...payload }
+      setToCookie('currentLocation', state.currentLocation)
+    },
+
     updateCity (state, payload) {
       state.cities[payload.idx] = { ...payload.city }
-      store.commit('weatherModule/setToCookie')
+      setToCookie('cities', state.cities)
     },
 
     deleteCity (state, payload) {
       state.isCityExist = false
       state.cities = state.cities.filter(city => city.id !== payload)
-      store.commit('weatherModule/setToCookie')
+      setToCookie('cities', state.cities)
     }
   },
 
@@ -67,7 +48,7 @@ export default {
       try {
         if (payload && !state.isCityExist) {
           const city = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${payload}&units=metric&appid=${state.apiKey}&lang=${state.lang}`)
-          commit('setCity', city.data)
+          commit('addNewCity', city.data)
         } else {
           return false
         }
@@ -98,6 +79,17 @@ export default {
       state.cities.forEach(city => {
         setTimeout(() => dispatch('getCityFromId', city.id), 500)
       })
+    },
+
+    async getLocation ({ commit, state }, position) {
+      const latitude = position.coords.latitude
+      const longitude = position.coords.longitude
+      try {
+        const location = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${state.apiKey}&lang=${state.lang}`)
+        commit('setCurrentLocation', location.data)
+      } catch (e) {
+        console.error(e.message)
+      }
     }
   }
 }

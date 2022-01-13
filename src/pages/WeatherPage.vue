@@ -1,7 +1,6 @@
 <template>
   <section class="weather-page">
     <div class="container">
-      <h1 class="weather-page-title">Weather App</h1>
       <add-city-form
         v-model="cityName"
       />
@@ -18,6 +17,7 @@
 import WeatherList from '../components/WeatherList'
 import addCityForm from '../components/addCityForm'
 import { mapActions, mapState, mapMutations } from 'vuex'
+import geoLocation from '../tools/checkCoords'
 
 export default {
   name: 'WeatherPage',
@@ -27,6 +27,8 @@ export default {
     }
   },
 
+  components: { WeatherList, addCityForm },
+
   computed: {
     ...mapState('weatherModule', {
       cities: state => state.cities
@@ -34,7 +36,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('weatherModule', ['getCity', 'getCityFromId', 'weatherOnAppStartUpdate']),
+    ...mapActions('weatherModule', ['getCity', 'getCityFromId', 'weatherOnAppStartUpdate', 'getLocation']),
     ...mapMutations('weatherModule', ['deleteCity'])
   },
   watch: {
@@ -43,10 +45,9 @@ export default {
       this.cityName = ''
     }
   },
-  components: { WeatherList, addCityForm },
-
-  mounted () {
+  created () {
     this.weatherOnAppStartUpdate()
+    geoLocation(this.getLocation)
   }
 
 }
@@ -55,12 +56,7 @@ export default {
 <style scoped lang="scss">
 .weather-page {
   padding: 120px 0 0 0;
-
-  &-title {
-    margin: 0 0 50px 0;
-    text-align: center;
-    color: #fff;
-  }
+  min-height: 100vh;
 
   & .add-form {
     margin-bottom: 20px;
