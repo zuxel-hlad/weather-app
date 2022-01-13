@@ -26,18 +26,21 @@ export default {
       cityName: ''
     }
   },
-  methods: {
-    ...mapActions('weatherModule', ['getCity', 'getCityFromId', 'weatherOnAppStartUpdate']),
-    ...mapMutations('weatherModule', ['deleteCity'])
-  },
+
   computed: {
     ...mapState('weatherModule', {
       cities: state => state.cities
     })
   },
+
+  methods: {
+    ...mapActions('weatherModule', ['getCity', 'getCityFromId', 'weatherOnAppStartUpdate']),
+    ...mapMutations('weatherModule', ['deleteCity'])
+  },
   watch: {
     cityName (newVal) {
       this.getCity(newVal)
+      this.cityName = ''
     }
   },
   components: { WeatherList, addCityForm },

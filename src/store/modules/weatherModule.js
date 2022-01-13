@@ -2,17 +2,17 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import store from '../index'
 
-function chekCoords (position) {
-  const latitude = position.coords.latitude
-  const longitude = position.coords.longitude
-  return {
-    latitude,
-    longitude
-  }
-}
-
-navigator.geolocation.getCurrentPosition(chekCoords)
-console.log(chekCoords().latitude)
+// function chekCoords (position) {
+//   const latitude = position.coords.latitude
+//   const longitude = position.coords.longitude
+//   return {
+//     latitude,
+//     longitude
+//   }
+// }
+//
+// navigator.geolocation.getCurrentPosition(chekCoords)
+// console.log(chekCoords().latitude)
 
 const initialState = (key) => {
   if (Cookies.get(key) === undefined) {
@@ -27,7 +27,8 @@ export default {
   state: () => ({
     cities: initialState('cities'),
     apiKey: 'ffc28ffb8dd4bfbefdbbb8d51dbbcc6c',
-    lang: 'ru'
+    lang: 'ru',
+    isCityExist: false
   }),
 
   mutations: {
@@ -36,8 +37,13 @@ export default {
     },
 
     setCity (state, payload) {
-      state.cities.push(payload)
-      store.commit('weatherModule/setToCookie')
+      if (!state.cities.some(city => city.id === payload.id)) {
+        state.isCityExist = false
+        state.cities.push(payload)
+        store.commit('weatherModule/setToCookie')
+      } else {
+        state.isCityExist = true
+      }
     },
 
     updateCity (state, payload) {
@@ -46,6 +52,7 @@ export default {
     },
 
     deleteCity (state, payload) {
+      state.isCityExist = false
       state.cities = state.cities.filter(city => city.id !== payload)
       store.commit('weatherModule/setToCookie')
     }
@@ -54,9 +61,11 @@ export default {
   actions: {
     async getCity ({ commit, state }, payload) {
       try {
-        if (payload) {
-          const weather = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${payload}&units=metric&appid=${state.apiKey}&lang=${state.lang}`)
-          commit('setCity', weather.data)
+        if (payload && !state.isCityExist) {
+          const city = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${payload}&units=metric&appid=${state.apiKey}&lang=${state.lang}`)
+          commit('setCity', city.data)
+        } else {
+          return false
         }
       } catch (e) {
         console.error(e.message)
@@ -79,7 +88,7 @@ export default {
     },
 
     async weatherOnAppStartUpdate ({ dispatch, state }) {
-      if (!state.cities.lang) {
+      if (!state.cities.length) {
         return
       }
       state.cities.forEach(city => {
