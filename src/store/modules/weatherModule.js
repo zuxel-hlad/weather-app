@@ -37,7 +37,7 @@ export default {
     },
 
     setCity (state, payload) {
-      if (!state.cities.some(city => city.id === payload.id)) {
+      if (state.cities === [] || !state.cities.some(city => city.id === payload.id)) {
         state.isCityExist = false
         state.cities.push(payload)
         store.commit('weatherModule/setToCookie')
