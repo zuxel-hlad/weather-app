@@ -1,12 +1,14 @@
-import axios from 'axios'
+import Api from '../../../api/api'
+const api = new Api()
+const { _getCity, _getCityById, _getLocation } = api
 
 export default {
 
   async getCity ({ commit, state }, payload) {
     try {
       if (payload && !state.isCityExist) {
-        const city = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${payload}&units=metric&appid=${state.apiKey}&lang=${state.lang}`)
-        commit('addNewCity', city.data)
+        const city = await _getCity(payload)
+        commit('addNewCity', city)
       } else {
         return false
       }
@@ -15,14 +17,14 @@ export default {
     }
   },
 
-  async getCityFromId ({ state, commit }, payload) {
+  async getCityById ({ state, commit }, payload) {
     const currentCityIdx = state.cities.findIndex(city => city.id === payload)
     try {
       if (payload) {
-        const newWeather = await axios.get(`https://api.openweathermap.org/data/2.5/weather?id=${payload}&units=metric&appid=${state.apiKey}&lang=${state.lang}`)
+        const newWeather = await _getCityById(payload)
         commit('updateCity', {
           idx: currentCityIdx,
-          city: newWeather.data
+          city: newWeather
         })
       }
     } catch (e) {
@@ -35,7 +37,7 @@ export default {
       return
     }
     state.cities.forEach(city => {
-      setTimeout(() => dispatch('getCityFromId', city.id), 500)
+      setTimeout(() => dispatch('getCityById', city.id), 500)
     })
   },
 
@@ -43,8 +45,8 @@ export default {
     const latitude = position.coords.latitude
     const longitude = position.coords.longitude
     try {
-      const location = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${state.apiKey}&lang=${state.lang}`)
-      commit('setCurrentLocation', location.data)
+      const location = await _getLocation(latitude, longitude)
+      commit('setCurrentLocation', location)
     } catch (e) {
       console.error(e.message)
     }

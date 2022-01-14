@@ -6,7 +6,7 @@
       />
       <weather-list
         :cities="cities"
-        @updateInfo="getCityFromId"
+        @updateInfo="getCityById"
         @delete="deleteCity"
       />
     </div>
@@ -17,7 +17,6 @@
 import WeatherList from '../components/WeatherList'
 import addCityForm from '../components/addCityForm'
 import { mapActions, mapState, mapMutations } from 'vuex'
-import geoLocation from '../tools/checkCoords'
 
 export default {
   name: 'WeatherPage',
@@ -36,8 +35,8 @@ export default {
   },
 
   methods: {
-    ...mapActions('weatherModule', ['getCity', 'getCityFromId', 'weatherOnAppStartUpdate', 'getLocation']),
-    ...mapMutations('weatherModule', ['deleteCity'])
+    ...mapActions('weatherModule', ['getCity', 'getCityById', 'weatherOnAppStartUpdate']),
+    ...mapMutations('weatherModule', ['deleteCity', 'getCities'])
   },
   watch: {
     cityName (newVal) {
@@ -46,11 +45,11 @@ export default {
     }
   },
   created () {
-    this.weatherOnAppStartUpdate()
-    geoLocation(this.getLocation)
+    this.getCities()
   }
 
 }
+
 </script>
 
 <style scoped lang="scss">

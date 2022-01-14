@@ -1,5 +1,6 @@
 import useCookie from '../../../tools/useCookie'
-const { setToCookie } = useCookie()
+
+const { setToCookie, getFromCookie } = useCookie()
 
 export default {
 
@@ -13,9 +14,25 @@ export default {
     }
   },
 
+  getCities (state) {
+    if (getFromCookie('cities')) {
+      state.cities = [...getFromCookie('cities')]
+    } else {
+      setToCookie('cities', [])
+    }
+  },
+
   setCurrentLocation (state, payload) {
     state.currentLocation = { ...payload }
     setToCookie('currentLocation', state.currentLocation)
+  },
+
+  getCurrentLocation (state) {
+    if (getFromCookie('currentLocation')) {
+      state.currentLocation = { ...getFromCookie('currentLocation') }
+    } else {
+      setToCookie('currentLocation', {})
+    }
   },
 
   updateCity (state, payload) {

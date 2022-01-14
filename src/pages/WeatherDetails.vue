@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'WeatherDetails',
@@ -41,8 +41,12 @@ export default {
     }
   },
 
-  mounted () {
-    console.log(this.$store.weatherModule)
+  methods: {
+    ...mapMutations('weatherModule', ['getCities'])
+  },
+
+  created () {
+    this.getCities()
   }
 }
 </script>
