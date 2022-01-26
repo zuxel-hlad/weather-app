@@ -5,10 +5,12 @@
         v-model="cityName"
       />
       <weather-list
+        v-if="!weatherIsLoading"
         :cities="cities"
         @updateInfo="getCityById"
         @delete="deleteCity"
       />
+      <app-loader v-else/>
     </div>
   </section>
 </template>
@@ -16,6 +18,7 @@
 <script>
 import WeatherList from '../components/WeatherList'
 import addCityForm from '../components/addCityForm'
+import AppLoader from '../components/AppLoader'
 import { mapActions, mapState, mapMutations } from 'vuex'
 
 export default {
@@ -26,11 +29,12 @@ export default {
     }
   },
 
-  components: { WeatherList, addCityForm },
+  components: { WeatherList, addCityForm, AppLoader },
 
   computed: {
     ...mapState('weatherModule', {
-      cities: state => state.cities
+      cities: state => state.cities,
+      weatherIsLoading: state => state.weatherIsLoading
     })
   },
 
@@ -46,6 +50,7 @@ export default {
   },
   created () {
     this.getCities()
+    this.weatherOnAppStartUpdate()
   }
 
 }

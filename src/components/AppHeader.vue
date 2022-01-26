@@ -3,7 +3,8 @@
     <span class="header-title">Weather App</span>
     <div class="header-location">
       <span class="location-details time">{{ new Date().toLocaleDateString() }}</span>
-      <span class="location-details">{{ location.name }}</span>
+      <span class="location-details" v-if="location.name">{{ location.name }}</span>
+      <span class="location-details" v-else>Местоположение не найдено</span>
     </div>
   </header>
 </template>
@@ -34,7 +35,7 @@ export default {
 .header {
   padding: 20px 50px;
   width: 100%;
-  background-color: rgba(0,0,0, .4);
+  background-color: rgba(0, 0, 0, .4);
   min-height: 80px;
   position: fixed;
   display: flex;

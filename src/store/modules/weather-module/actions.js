@@ -1,10 +1,12 @@
 import Api from '../../../api/api'
+
 const api = new Api()
 const { _getCity, _getCityById, _getLocation } = api
 
 export default {
 
   async getCity ({ commit, state }, payload) {
+    console.log(payload)
     try {
       if (payload && !state.isCityExist) {
         const city = await _getCity(payload)
@@ -21,6 +23,7 @@ export default {
     const currentCityIdx = state.cities.findIndex(city => city.id === payload)
     try {
       if (payload) {
+        commit('setLoaderToggle', true)
         const newWeather = await _getCityById(payload)
         commit('updateCity', {
           idx: currentCityIdx,
@@ -29,6 +32,8 @@ export default {
       }
     } catch (e) {
       console.error(e.message)
+    } finally {
+      commit('setLoaderToggle', false)
     }
   },
 

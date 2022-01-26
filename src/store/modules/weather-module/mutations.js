@@ -44,5 +44,9 @@ export default {
     state.isCityExist = false
     state.cities = state.cities.filter(city => city.id !== payload)
     setToCookie('cities', state.cities)
+  },
+
+  setLoaderToggle (state, payload) {
+    state.weatherIsLoading = payload
   }
 }

@@ -14,7 +14,6 @@
 
 <script>
 import WeatherCard from './WeatherCard'
-
 export default {
   name: 'WeatherList',
   props: {
