@@ -1,34 +1,18 @@
-import Api from '../../../api/api'
+import { api } from '@/api'
 
-const api = new Api()
 const { _getCity, _getCityById, _getLocation } = api
 
 export default {
 
   async getCity ({ commit, state }, payload) {
-    console.log(payload)
     try {
-      if (payload && !state.isCityExist) {
+      const incomingCity = state.cities.find(item => item.name.toLowerCase() === payload.toLowerCase())
+      if (payload && !incomingCity) {
+        commit('setLoaderToggle', true)
         const city = await _getCity(payload)
         commit('addNewCity', city)
       } else {
         return false
-      }
-    } catch (e) {
-      console.error(e.message)
-    }
-  },
-
-  async getCityById ({ state, commit }, payload) {
-    const currentCityIdx = state.cities.findIndex(city => city.id === payload)
-    try {
-      if (payload) {
-        commit('setLoaderToggle', true)
-        const newWeather = await _getCityById(payload)
-        commit('updateCity', {
-          idx: currentCityIdx,
-          city: newWeather
-        })
       }
     } catch (e) {
       console.error(e.message)
@@ -37,12 +21,28 @@ export default {
     }
   },
 
+  async updateCityById ({ state, commit }, payload) {
+    try {
+      if (payload) {
+        commit('setCityLoader', payload)
+        const currentCityIdx = state.cities.findIndex(city => city.id === payload)
+        const newWeather = await _getCityById(payload)
+        commit('updateCity', {
+          idx: currentCityIdx,
+          city: newWeather
+        })
+      }
+    } catch (e) {
+      console.error(e.message)
+    }
+  },
+
   async weatherOnAppStartUpdate ({ dispatch, state }) {
     if (!state.cities.length) {
       return
     }
     state.cities.forEach(city => {
-      setTimeout(() => dispatch('getCityById', city.id), 500)
+      setTimeout(() => dispatch('updateCityById', city.id), 500)
     })
   },
 

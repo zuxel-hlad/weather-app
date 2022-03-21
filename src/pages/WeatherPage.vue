@@ -7,7 +7,7 @@
       <weather-list
         v-if="!weatherIsLoading"
         :cities="cities"
-        @updateInfo="getCityById"
+        @updateInfo="updateCityById"
         @delete="deleteCity"
       />
       <app-loader v-else/>
@@ -16,16 +16,17 @@
 </template>
 
 <script>
-import WeatherList from '../components/WeatherList'
-import addCityForm from '../components/addCityForm'
-import AppLoader from '../components/AppLoader'
+import WeatherList from '@/components/WeatherList'
+import addCityForm from '@/components/addCityForm'
+import AppLoader from '@/components/AppLoader'
 import { mapActions, mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'WeatherPage',
   data () {
     return {
-      cityName: ''
+      cityName: '',
+      error: false
     }
   },
 
@@ -37,22 +38,20 @@ export default {
       weatherIsLoading: state => state.weatherIsLoading
     })
   },
-
-  methods: {
-    ...mapActions('weatherModule', ['getCity', 'getCityById', 'weatherOnAppStartUpdate']),
-    ...mapMutations('weatherModule', ['deleteCity', 'getCities'])
-  },
   watch: {
     cityName (newVal) {
       this.getCity(newVal)
       this.cityName = ''
     }
   },
-  created () {
+  mounted () {
     this.getCities()
     this.weatherOnAppStartUpdate()
+  },
+  methods: {
+    ...mapActions('weatherModule', ['getCity', 'updateCityById', 'weatherOnAppStartUpdate']),
+    ...mapMutations('weatherModule', ['deleteCity', 'getCities'])
   }
-
 }
 
 </script>

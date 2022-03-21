@@ -1,19 +1,28 @@
 <template>
-  <div class="weather-list" v-if="cities.length">
+  <div
+    v-if="cities.length"
+    class="weather-list"
+  >
     <transition-group name="bounce">
       <weather-card
-        v-for="city in cities" :key="city.id"
+        v-for="city in cities"
+        :key="city.id"
         :city="city"
         @updateInfo="$emit('updateInfo', city.id)"
         @delete="$emit('delete',city.id)"
       />
     </transition-group>
   </div>
-  <h3 class="weather-list-message" v-else>Выбранных городов пока нет.</h3>
+  <h3
+    v-else
+    class="weather-list-message"
+  >
+    Выбранных городов пока нет.
+  </h3>
 </template>
 
 <script>
-import WeatherCard from './WeatherCard'
+import WeatherCard from '@/components/WeatherCard'
 export default {
   name: 'WeatherList',
   props: {
@@ -23,6 +32,7 @@ export default {
       default: () => []
     }
   },
+  emits: ['updateInfo', 'delete'],
   components: { WeatherCard }
 }
 </script>

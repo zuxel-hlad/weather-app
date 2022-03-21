@@ -6,11 +6,9 @@ export default {
 
   state: () => ({
     cities: [],
-    isCityExist: false,
     weatherIsLoading: false,
     currentLocation: {}
   }),
   mutations,
   actions
-
 }

@@ -6,7 +6,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/home?',
+      path: '/home',
       alias: '/',
       component: WeatherPage
     },

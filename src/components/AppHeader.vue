@@ -1,17 +1,32 @@
 <template>
   <header class="header">
-    <span class="header-title">Weather App</span>
+    <router-link
+      class="header-logo"
+      to="/"
+    >
+      Weather App
+    </router-link>
     <div class="header-location">
       <span class="location-details time">{{ new Date().toLocaleDateString() }}</span>
-      <span class="location-details" v-if="location.name">{{ location.name }}</span>
-      <span class="location-details" v-else>Местоположение не найдено</span>
+      <span
+        v-if="location.name"
+        class="location-details"
+      >
+        {{ location.name }}
+      </span>
+      <span
+        v-else
+        class="location-details"
+      >
+        Местоположение не найдено
+      </span>
     </div>
   </header>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
-import geoLocation from '../tools/checkCoords'
+import geoLocation from '@/tools/checkCoords'
 
 export default {
   name: 'AppHeader',
@@ -20,13 +35,13 @@ export default {
       location: state => state.currentLocation
     })
   },
+  mounted () {
+    geoLocation(this.getLocation)
+    this.getCurrentLocation()
+  },
   methods: {
     ...mapMutations('weatherModule', ['getCurrentLocation']),
     ...mapActions('weatherModule', ['getLocation'])
-  },
-  created () {
-    geoLocation(this.getLocation)
-    this.getCurrentLocation()
   }
 }
 </script>
@@ -56,8 +71,9 @@ export default {
     }
   }
 
-  &-title {
+  &-logo {
     display: block;
+    text-decoration: none;
     font-weight: 500;
     font-size: 35px;
     color: #fff;

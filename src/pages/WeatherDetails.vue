@@ -1,11 +1,21 @@
 <template>
   <section class="weather-details">
-    <div class="container">
+    <div class="container"
+    >
       <div class="weather-details-nav">
         <h1 class="details-title">Страница подробного прогноза</h1>
-        <button class="weather-details-back" @click="$router.push('/')">На главную</button>
+        <button
+          class="weather-details-back"
+          @click="$router.push('/')"
+        >
+          На главную
+        </button>
       </div>
-      <div class="weather-now">
+      <app-loader v-if="!currentCity"/>
+      <div
+        v-else
+        class="weather-now"
+      >
         <h2 class="weather-now-title">Пргноз на данный момент</h2>
         <span class="weather-now-text">Город: {{ currentCity.name }}</span>
         <span class="weather-now-text">Долгота: {{ currentCity.coord.lat }}</span>
@@ -28,10 +38,10 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-
+import AppLoader from '@/components/AppLoader'
 export default {
   name: 'WeatherDetails',
-
+  components: { AppLoader },
   computed: {
     ...mapState('weatherModule', {
       cities: state => state.cities
@@ -40,13 +50,11 @@ export default {
       return this.cities.find(city => city.id === +this.$route.params.id)
     }
   },
-
+  mounted () {
+    this.getCities()
+  },
   methods: {
     ...mapMutations('weatherModule', ['getCities'])
-  },
-
-  created () {
-    this.getCities()
   }
 }
 </script>
