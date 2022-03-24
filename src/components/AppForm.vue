@@ -12,6 +12,7 @@
     </div>
     <basic-button
       contentClass="add-form-btn"
+      @click="updateSearch"
     >
       Добавить город
     </basic-button>
@@ -20,7 +21,7 @@
 
 <script>
 export default {
-  name: 'addCityForm',
+  name: 'AppForm',
   props: {
     modelValue: {
       type: String,

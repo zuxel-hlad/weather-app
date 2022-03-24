@@ -11,11 +11,8 @@
           На главную
         </button>
       </div>
-      <app-loader v-if="!currentCity"/>
-      <div
-        v-else
-        class="weather-now"
-      >
+
+      <div class="weather-now" v-if="currentCity">
         <h2 class="weather-now-title">Пргноз на данный момент</h2>
         <span class="weather-now-text">Город: {{ currentCity.name }}</span>
         <span class="weather-now-text">Долгота: {{ currentCity.coord.lat }}</span>
@@ -31,17 +28,15 @@
         <span class="weather-now-text">Скоровсть ветера:  {{ currentCity.wind.speed.toFixed() }} м/сек</span>
         <span class="weather-now-text">Видмость: {{ currentCity.visibility }}  метров</span>
       </div>
-
+      <span class="weather-not-found" v-else>Совпадений не найдено</span>
     </div>
   </section>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import AppLoader from '@/components/AppLoader'
 export default {
   name: 'WeatherDetails',
-  components: { AppLoader },
   computed: {
     ...mapState('weatherModule', {
       cities: state => state.cities
@@ -51,10 +46,12 @@ export default {
     }
   },
   mounted () {
+    this.checkIsAuth()
     this.getCities()
   },
   methods: {
-    ...mapMutations('weatherModule', ['getCities'])
+    ...mapMutations('weatherModule', ['getCities']),
+    ...mapMutations('authModule', ['checkIsAuth'])
   }
 }
 </script>

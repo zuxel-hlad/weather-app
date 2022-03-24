@@ -41,8 +41,8 @@ export default {
 .weather-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 25px;
+  justify-content: space-between;
+  gap: 30px;
 
  & .bounce-enter-active {
     animation: bounce-in 0.4s;

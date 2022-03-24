@@ -52,8 +52,11 @@
             <small class="card-details-descr">
               <strong>Ощущается как:</strong> {{ city.main.feels_like.toFixed() }}
             </small>
-            <small class="card-details-descr"><strong>Атмосферное давление:</strong> {{ city.main.pressure }} гПа</small>
-            <small class="card-details-descr"><strong>Погодные условия:</strong> {{ city.weather[0].description }}</small>
+            <small class="card-details-descr"><strong>Атмосферное давление:</strong> {{ city.main.pressure }}
+              гПа</small>
+            <small class="card-details-descr"><strong>Погодные условия:</strong> {{
+                city.weather[0].description
+              }}</small>
             <small class="card-details-descr"><strong>Ветер:</strong> {{ city.wind.speed }} м/сек</small>
           </div>
         </transition>
@@ -101,6 +104,10 @@ export default {
   background: linear-gradient(to top, darkgreen, lightgreen);
   border-radius: 4px;
   cursor: pointer;
+
+  &:last-child {
+    margin: 0 auto 0 0;
+  }
 
   &-content {
     position: relative;
@@ -156,12 +163,14 @@ export default {
 
     &:hover {
       background: unset;
+
       svg {
         fill: darkgreen;
       }
     }
-    &:active{
-      box-shadow:none;
+
+    &:active {
+      box-shadow: none;
     }
   }
 
@@ -197,9 +206,11 @@ export default {
         background: unset;
         color: red;
       }
-      &:active{
+
+      &:active {
         box-shadow: none;
-      };
+      }
+    ;
     }
   }
 

@@ -12,8 +12,13 @@ export default () => {
     Cookies.set(key, JSON.stringify(value))
   }
 
+  const removeFromCookie = (key, value) => {
+    Cookies.remove(key, value)
+  }
+
   return {
     getFromCookie,
-    setToCookie
+    setToCookie,
+    removeFromCookie
   }
 }

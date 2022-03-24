@@ -1,7 +1,7 @@
 <template>
   <section class="weather-page">
     <div class="container">
-      <add-city-form
+      <app-form
         v-model="cityName"
       />
       <weather-list
@@ -17,7 +17,7 @@
 
 <script>
 import WeatherList from '@/components/WeatherList'
-import addCityForm from '@/components/addCityForm'
+import AppForm from '@/components/AppForm'
 import AppLoader from '@/components/AppLoader'
 import { mapActions, mapState, mapMutations } from 'vuex'
 
@@ -30,7 +30,7 @@ export default {
     }
   },
 
-  components: { WeatherList, addCityForm, AppLoader },
+  components: { WeatherList, AppForm, AppLoader },
 
   computed: {
     ...mapState('weatherModule', {
@@ -45,12 +45,14 @@ export default {
     }
   },
   mounted () {
+    this.checkIsAuth()
     this.getCities()
     this.weatherOnAppStartUpdate()
   },
   methods: {
     ...mapActions('weatherModule', ['getCity', 'updateCityById', 'weatherOnAppStartUpdate']),
-    ...mapMutations('weatherModule', ['deleteCity', 'getCities'])
+    ...mapMutations('weatherModule', ['deleteCity', 'getCities']),
+    ...mapMutations('authModule', ['checkIsAuth'])
   }
 }
 

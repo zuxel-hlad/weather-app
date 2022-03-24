@@ -1,6 +1,6 @@
 <template>
   <input
-    type="text"
+    :type="type"
     :value="modelValue"
     :class="`basic-input ${contentClass}`"
     :placeholder="placeholder"
@@ -24,6 +24,10 @@ export default {
     placeholder: {
       type: String,
       default: ''
+    },
+    type: {
+      type: String,
+      default: 'text'
     }
   },
   emits: ['update:modelValue']

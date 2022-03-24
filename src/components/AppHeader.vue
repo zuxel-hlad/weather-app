@@ -1,5 +1,7 @@
 <template>
-  <header class="header">
+  <header
+    v-if="isLogged"
+    class="header">
     <router-link
       class="header-logo"
       to="/"
@@ -20,6 +22,11 @@
       >
         Местоположение не найдено
       </span>
+      <basic-button
+        @click="logout"
+      >
+        Logout
+      </basic-button>
     </div>
   </header>
 </template>
@@ -33,6 +40,9 @@ export default {
   computed: {
     ...mapState('weatherModule', {
       location: state => state.currentLocation
+    }),
+    ...mapState('authModule', {
+      isLogged: state => state.isLogged
     })
   },
   mounted () {
@@ -41,6 +51,7 @@ export default {
   },
   methods: {
     ...mapMutations('weatherModule', ['getCurrentLocation']),
+    ...mapMutations('authModule', ['logout']),
     ...mapActions('weatherModule', ['getLocation'])
   }
 }
