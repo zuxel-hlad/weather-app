@@ -1,6 +1,4 @@
-import useCookie from '@/tools/useCookie'
 import router from '@/router'
-const { setToCookie, getFromCookie, removeFromCookie } = useCookie()
 
 export default {
   namespaced: true,
@@ -10,21 +8,20 @@ export default {
   mutations: {
     login (state) {
       state.isLogged = true
-      setToCookie('isLogged', { status: true })
+      localStorage.setItem('isLogged', JSON.stringify({ isLogged: state.isLogged }))
       router.push('/home')
     },
 
     logout (state) {
       state.isLogged = false
-      removeFromCookie('isLogged', { status: true })
-      setToCookie('isLogged', { status: false })
+      localStorage.setItem('isLogged', JSON.stringify({ isLogged: state.isLogged }))
       router.push('/login')
     },
     checkIsAuth (state) {
-      if (getFromCookie('isLogged').status) {
-        state.isLogged = getFromCookie('isLogged').status
+      if (JSON.parse(localStorage.getItem('isLogged')).isLogged) {
+        state.isLogged = true
       } else {
-        return false
+        localStorage.setItem('isLogged', JSON.stringify({ isLogged: state.isLogged }))
       }
     }
   }

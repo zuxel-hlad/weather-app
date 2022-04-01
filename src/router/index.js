@@ -3,10 +3,8 @@ import WeatherPage from '@/pages/WeatherPage'
 import WeatherDetails from '@/pages/WeatherDetails'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
-import useCookie from '@/tools/useCookie'
-const { getFromCookie } = useCookie()
-const isAuth = getFromCookie('isLogged')
-console.log(isAuth)
+
+const isAuth = () => JSON.parse(localStorage.getItem('isLogged')).isLogged
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -35,7 +33,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && !isAuth.status) next({ name: 'Login' })
+  if (to.name !== 'Login' && !isAuth()) next({ name: 'Login' })
   else next()
 })
 
