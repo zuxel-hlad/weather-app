@@ -1,5 +1,7 @@
 import router from '@/router'
+import useLocalStorage from '@/tools/useLocalStorage'
 
+const { setToLocalStorage, getFromLocalStorage } = useLocalStorage()
 export default {
   namespaced: true,
   state: () => ({
@@ -8,20 +10,20 @@ export default {
   mutations: {
     login (state) {
       state.isLogged = true
-      localStorage.setItem('isLogged', JSON.stringify({ isLogged: state.isLogged }))
+      setToLocalStorage('isLogged', { isLogged: state.isLogged })
       router.push('/home')
     },
 
     logout (state) {
       state.isLogged = false
-      localStorage.setItem('isLogged', JSON.stringify({ isLogged: state.isLogged }))
+      setToLocalStorage('isLogged', { isLogged: state.isLogged })
       router.push('/login')
     },
     checkIsAuth (state) {
-      if (JSON.parse(localStorage.getItem('isLogged')).isLogged) {
+      if (getFromLocalStorage('isLogged').isLogged) {
         state.isLogged = true
       } else {
-        localStorage.setItem('isLogged', JSON.stringify({ isLogged: state.isLogged }))
+        setToLocalStorage('isLogged', { isLogged: state.isLogged })
       }
     }
   }
