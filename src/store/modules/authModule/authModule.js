@@ -20,11 +20,10 @@ export default {
       router.push('/login')
     },
     checkIsAuth (state) {
-      if (getFromLocalStorage('isLogged').isLogged) {
-        state.isLogged = true
-      } else {
+      console.log('auth')
+      if (!getFromLocalStorage('isLogged')) {
         setToLocalStorage('isLogged', { isLogged: state.isLogged })
-      }
+      } else return false
     }
   }
 }

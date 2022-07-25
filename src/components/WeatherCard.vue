@@ -100,9 +100,12 @@ export default {
   padding: 20px;
   width: 380px;
   min-height: 250px;
-  box-shadow: 3px 3px 20px #d0d0d0;
-  background: linear-gradient(to top, darkgreen, lightgreen);
-  border-radius: 4px;
+  background: rgba( 255, 255, 255, 0.05 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 5px );
+  -webkit-backdrop-filter: blur( 5px );
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  border-radius: 6px;
   cursor: pointer;
 
   &:last-child {

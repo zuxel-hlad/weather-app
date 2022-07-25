@@ -4,7 +4,7 @@ import WeatherDetails from '@/pages/WeatherDetails'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
 
-const isAuth = () => JSON.parse(localStorage.getItem('isLogged')).isLogged
+const isAuth = () => JSON.parse(localStorage.getItem('isLogged'))?.isLogged
 const router = createRouter({
   history: createWebHistory(),
   routes: [
